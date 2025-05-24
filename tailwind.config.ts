@@ -11,6 +11,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        dirtygreen: "#4b5d38"
       },
     },
   },

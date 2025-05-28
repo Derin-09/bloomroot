@@ -1,5 +1,3 @@
-// app/components/HeroSection.tsx
-
 import { FaLeaf } from 'react-icons/fa';
 
 export default function HeroSection() {
@@ -14,10 +12,7 @@ export default function HeroSection() {
         <p className="text-xl md:text-2xl text-primary-100 mb-8">
           Hand-selected plants to transform your space into a green oasis
         </p>
-        
       </div>
-
-      {/* Decorative leaf elements (optional) */}
       <div className="absolute bottom-10 left-10 w-16 h-16 opacity-70">
         <FaLeaf className="text-primary-300" />
       </div>

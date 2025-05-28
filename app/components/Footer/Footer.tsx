@@ -1,4 +1,3 @@
-// app/components/Footer.tsx
 import { MapPinIcon, PhoneIcon, EnvelopeIcon, } from '@heroicons/react/24/outline';
 import { FaInstagram, FaFacebook, FaPinterest } from 'react-icons/fa';
 

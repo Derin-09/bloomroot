@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Bloom & Root | Boutique Plant Shop',
   description: 'Bring life into your home with our curated selection of plants',
   icons: {
-    icon: '/favicon.ico', // or '/favicon.png'
+    icon: '/favicon.ico', 
   },
 }
 

@@ -14,7 +14,7 @@ export default function ContactForm() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState('')
-  const [isLogin, setIsLogin] = useState(true)
+  const isLogin = true
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -27,20 +27,23 @@ export default function ContactForm() {
   const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
+
     try {
       if (isLogin) {
-        // Sign in existing user
         await signInWithEmailAndPassword(auth, formData.email, 'dummyPassword')
         setSubmitMessage('You are now signed in (demo purposes)')
       } else {
-        // Register new user
         await createUserWithEmailAndPassword(auth, formData.email, 'dummyPassword')
         setSubmitMessage('Account created (demo purposes)')
       }
-    } catch (error: any) {
-      setSubmitMessage(error.message)
-    } finally {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setSubmitMessage(error.message);
+      } else {
+        setSubmitMessage("An unknown error occurred.");
+      }
+    }
+    finally {
       setIsSubmitting(false)
     }
   }
@@ -48,7 +51,7 @@ export default function ContactForm() {
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
+
     try {
       await addDoc(collection(db, 'messages'), {
         name: formData.name,
@@ -60,6 +63,7 @@ export default function ContactForm() {
       setFormData({ name: '', email: '', message: '' })
     } catch (error) {
       setSubmitMessage('Something went wrong. Please try again later.')
+      console.log(error)
     } finally {
       setIsSubmitting(false)
     }
@@ -71,13 +75,13 @@ export default function ContactForm() {
         <div>
           <h2 className="text-3xl font-bold mb-6 text-gray-800">Visit Us</h2>
           <div className="h-96 w-full rounded-lg overflow-hidden">
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215209179042!2d-73.98784492423947!3d40.74844097138976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1712345678901!5m2!1sen!2sus" 
-              width="100%" 
-              height="100%" 
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215209179042!2d-73.98784492423947!3d40.74844097138976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1712345678901!5m2!1sen!2sus"
+              width="100%"
+              height="100%"
               style={{ border: 0 }}
-              allowFullScreen 
-              loading="lazy" 
+              allowFullScreen
+              loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
@@ -87,16 +91,16 @@ export default function ContactForm() {
             <p className="text-gray-600"><strong>Phone:</strong> (123) 456-7890</p>
           </div>
         </div>
-        
+
         <div>
           <div className="">
-            
+
           </div>
-          
+
           <h2 className="text-3xl font-bold mb-6 text-gray-800">
             {isLogin ? 'Contact Us' : 'Admin Portal'}
           </h2>
-          
+
           <form onSubmit={isLogin ? handleContactSubmit : handleAuthSubmit} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-gray-700 mb-2">

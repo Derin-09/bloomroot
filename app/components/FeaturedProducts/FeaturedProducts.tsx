@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner' // Optional loading component
+import Image from 'next/image' 
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
 
 interface Product {
   id: string
@@ -19,7 +20,6 @@ export default function FeaturedProducts() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
- 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -32,7 +32,7 @@ export default function FeaturedProducts() {
 
         const productsData: Product[] = [];
         querySnapshot.forEach((doc) => {
-          if (!doc.data().image) { // Validate required field
+          if (!doc.data().image) { 
             console.warn(`Document ${doc.id} missing image field`);
           }
           productsData.push({ id: doc.id, ...doc.data() } as Product);
@@ -49,8 +49,9 @@ export default function FeaturedProducts() {
 
     fetchProducts();
   }, []);
+
   if (loading) {
-    return <LoadingSpinner /> // Or your custom loading component
+    return <LoadingSpinner /> 
   }
 
   if (error) {
@@ -84,11 +85,14 @@ export default function FeaturedProducts() {
               key={product.id} 
               className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-500"
             >
-              <div className="h-80 overflow-hidden">
-                <img 
+              <div className="h-80 overflow-hidden relative">
+                <Image 
                   src={product.image} 
                   alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  priority={false} 
                 />
               </div>
               
@@ -111,4 +115,3 @@ export default function FeaturedProducts() {
     </section>
   )
 }
-  

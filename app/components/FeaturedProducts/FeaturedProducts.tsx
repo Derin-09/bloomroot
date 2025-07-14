@@ -80,7 +80,7 @@ export default function FeaturedProducts() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {products.map((product) => (
+         {products.map((product) => (
             <div 
               key={product.id} 
               className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-500"

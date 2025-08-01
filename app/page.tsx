@@ -6,12 +6,12 @@ import FeaturedProducts from './components/FeaturedProducts/FeaturedProducts'
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen select-none">
       <HeroSection />
       <FeaturedProducts/>
       <AboutSection />
       <ContactForm />
-      <Footer/>
+      <Footer />
     </main>
   )
 }

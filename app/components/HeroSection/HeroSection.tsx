@@ -2,7 +2,7 @@ import { FaLeaf } from 'react-icons/fa';
 
 export default function HeroSection() {
   return (
-    <section className="relative h-screen flex items-center justify-center bg-cover bg-no-repeat " 
+    <section className="relative h-screen flex items-center justify-center bg-cover bg-no-repeat select-none" 
       style={{ backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/hero-bg.avif') " }}>
       
       <div className="text-center px-6 max-w-4xl mx-auto pl-4">

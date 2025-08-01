@@ -71,7 +71,7 @@ export default function FeaturedProducts() {
   }
 
   return (
-    <section className="py-24 px-6 bg-white text-dirtygreen">
+    <section className="py-24 px-6 bg-white text-dirtygreen select-none">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <span className="text-primary-500 font-semibold">Our Collection</span>

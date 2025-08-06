@@ -5,14 +5,14 @@ export default function AboutSection() {
   return (
     <section className="py-24 px-6 bg-primary-100 bg-neutral-300 text-dirtygreen select-none">
       <div className="max-w-7xl mx-auto">
-        <div className="lg:w-1/2">
+        <div className="xl:w-1/2">
           <span className="text-primary-600 font-semibold">Our Story</span>
           <h2 className="text-4xl font-bold mt-2 mb-6">More Than Just a Plant Shop</h2>
           <p className="text-lg mb-6">
             Founded with a passion for bringing nature indoors, Bloom & Root curates only the healthiest,
             most vibrant plants to transform your living space.
           </p>
-          <div className="flex flex-col lg:flex-row items-center gap-12">
+          <div className="flex flex-col xl:flex-row items-center gap-12">
             <div className="w-full md:w-[60%] lg:w-[60%]">
               <div className="relative h-[300px] rounded-2xl overflow-hidden shadow-xl">
                 <Image

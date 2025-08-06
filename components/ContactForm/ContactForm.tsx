@@ -4,18 +4,15 @@ export const dynamic = 'force-dynamic';
 import { useState } from 'react'
 import { addDoc, collection } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '@/lib/firebase'
 
 export default function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState('')
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitMessage, setSubmitMessage] = useState('')
-  const isLogin = true
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -25,29 +22,6 @@ export default function ContactForm() {
     }))
   }
 
-  const handleAuthSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-
-    try {
-      if (isLogin) {
-        await signInWithEmailAndPassword(auth, formData.email, 'dummyPassword')
-        setSubmitMessage('You are now signed in (demo purposes)')
-      } else {
-        await createUserWithEmailAndPassword(auth, formData.email, 'dummyPassword')
-        setSubmitMessage('Account created (demo purposes)')
-      }
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setSubmitMessage(error.message);
-      } else {
-        setSubmitMessage("An unknown error occurred.");
-      }
-    }
-    finally {
-      setIsSubmitting(false)
-    }
-  }
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -99,13 +73,13 @@ export default function ContactForm() {
           </div>
 
           <h2 className="text-3xl font-bold mb-6 text-gray-800">
-            {isLogin ? 'Contact Us' : 'Admin Portal'}
+            Contact Us
           </h2>
 
-          <form onSubmit={isLogin ? handleContactSubmit : handleAuthSubmit} className="space-y-6">
+          <form onSubmit={handleContactSubmit} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-gray-700 mb-2">
-                {isLogin ? 'Name' : 'Admin Name'}
+                Name
               </label>
               <input
                 type="text"
@@ -129,7 +103,6 @@ export default function ContactForm() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dirtygreen text-black"
               />
             </div>
-            {isLogin && (
               <div>
                 <label htmlFor="message" className="block text-gray-700 mb-2">Message</label>
                 <textarea
@@ -141,13 +114,13 @@ export default function ContactForm() {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dirtygreen text-black"
                 ></textarea>
               </div>
-            )}
+            )
             <button
               type="submit"
               disabled={isSubmitting}
               className="bg-dirtygreen hover:bg-dirtygreen text-white font-bold py-3 px-6 rounded-lg transition duration-300 disabled:opacity-50"
             >
-              {isSubmitting ? 'Processing...' : isLogin ? 'Send Message' : 'Login'}
+              {isSubmitting ? 'Processing...' : 'Send Message'}
             </button>
             {submitMessage && (
               <p className={`mt-4 ${submitMessage.includes('Thank you') || submitMessage.includes('created') ? 'text-dirtygreen' : 'text-red-600'}`}>

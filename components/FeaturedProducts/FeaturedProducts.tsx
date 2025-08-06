@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import Image from 'next/image' 
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner'
+import LoadingSpinner from '@/ui/LoadingSpinner'
 
 interface Product {
   id: string

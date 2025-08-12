@@ -1,46 +1,51 @@
 'use client'
-
 export const dynamic = 'force-dynamic';
 import { useState } from 'react'
 import { addDoc, collection } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
+import { useForm } from 'react-hook-form';
+import { email, z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const schema = z.object({
+  name: z.string().min(1, "Name required"),
+  email: z.string().email('Invalid email'),
+  message: z.string().min(1, "Message required")
+})
+
+type FormData = z.infer<typeof schema>
+
 
 export default function ContactForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormData>({ resolver: zodResolver(schema) })
   const [submitMessage, setSubmitMessage] = useState('')
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  })
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
+  // const [formData, setFormData] = useState({
+  //   name: '',
+  //   email: '',
+  //   message: ''
+  // })
 
 
-  const handleContactSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  //   const { name, value } = e.target
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     [name]: value
+  //   }))
+  // }
+
+
+  const onSubmit = async (data: FormData) => {
 
     try {
       await addDoc(collection(db, 'messages'), {
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
         createdAt: new Date().toISOString()
       })
       setSubmitMessage('Thank you for your message! We will get back to you soon.')
-      setFormData({ name: '', email: '', message: '' })
+      reset()
     } catch (error) {
       setSubmitMessage('Something went wrong. Please try again later.')
       console.log(error)
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
@@ -76,7 +81,7 @@ export default function ContactForm() {
             Contact Us
           </h2>
 
-          <form onSubmit={handleContactSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-gray-700 mb-2">
                 Name
@@ -84,36 +89,31 @@ export default function ContactForm() {
               <input
                 type="text"
                 id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
+                { ...register('name')}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dirtygreen text-black"
               />
+              <p>{ errors.name && errors.name.message}</p>
             </div>
             <div>
               <label htmlFor="email" className="block text-gray-700 mb-2">Email</label>
               <input
                 type="email"
                 id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
+                { ...register('email')}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dirtygreen text-black"
               />
+              <p>{ errors.email && errors.email.message}</p>
             </div>
-              <div>
-                <label htmlFor="message" className="block text-gray-700 mb-2">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={5}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dirtygreen text-black"
-                ></textarea>
-              </div>
+            <div>
+              <label htmlFor="message" className="block text-gray-700 mb-2">Message</label>
+              <textarea
+                id="message"
+                { ...register('message')}
+                rows={5}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dirtygreen text-black"
+              ></textarea>
+              <p>{ errors.message && errors.message.message}</p>
+            </div>
             )
             <button
               type="submit"
